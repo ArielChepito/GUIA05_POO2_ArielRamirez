@@ -5,66 +5,70 @@
  */
 package com.sv.udb.controlador;
 
-import com.sv.udb.ejb.GruposFacadeLocal;
-import com.sv.udb.modelo.Grupos;
-import com.sv.udb.modelo.Grupos;
+import com.sv.udb.ejb.ProfesoresFacadeLocal;
+import com.sv.udb.ejb.ProfesoresFacadeLocal;
+import com.sv.udb.modelo.Profesores;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.enterprise.context.Dependent;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 
 /**
  *
- * @author Mauricio
+ * @author Laboratorio
  */
-@Named(value = "gruposBean")
+@Named(value = "profesoresBean")
 @ViewScoped
-public class GruposBean implements Serializable{
+public class ProfesoresBean  implements Serializable {
 
     @EJB
-    private GruposFacadeLocal FCDEGrupos;
-  private Grupos objeGrup;
-    private List<Grupos> listGrup;
+    private ProfesoresFacadeLocal FCDEAProf;
+
+ 
+    
+    private Profesores objeProf;
+    private List<Profesores> listProf;
     private boolean guardar;
 
-    public Grupos getObjeGrup() {
-        return objeGrup;
+    public Profesores getObjeProf() {
+        return objeProf;
     }
 
-    public void setObjeGrup(Grupos objeGrup) {
-        this.objeGrup = objeGrup;
+    public void setObjeAlum(Profesores objeProf) {
+        this.objeProf = objeProf;
     }
 
     public boolean isGuardar() {
         return guardar;
     }
 
-    public List<Grupos> getListGrup() {
-        return listGrup;
+    public List<Profesores> getListProf() {
+        return listProf;
     }
     
     /**
-     * Creates a new instance of GruposBean
+     * Creates a new instance of ProfesoresBean
      */
     
-    public GruposBean() {
+    public ProfesoresBean() {
     }
     
     @PostConstruct
     public void init()
     {
-        this.objeGrup = new Grupos();
+        this.objeProf = new Profesores();
         this.guardar = true;
         this.consTodo();
     }
     
     public void limpForm()
     {
-        this.objeGrup = new Grupos();
+        this.objeProf = new Profesores();
         this.guardar = true;        
     }
     
@@ -73,8 +77,8 @@ public class GruposBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            FCDEGrupos.create(this.objeGrup);
-            this.listGrup.add(this.objeGrup);
+            FCDEAProf.create(this.objeProf);
+            this.listProf.add(this.objeProf);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
         }
@@ -93,9 +97,9 @@ public class GruposBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            this.listGrup.remove(this.objeGrup); //Limpia el objeto viejo
-            FCDEGrupos.edit(this.objeGrup);
-            this.listGrup.add(this.objeGrup); //Agrega el objeto modificado
+            this.listProf.remove(this.objeProf); //Limpia el objeto viejo
+            FCDEAProf.edit(this.objeProf);
+            this.listProf.add(this.objeProf); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
         }
         catch(Exception ex)
@@ -113,8 +117,8 @@ public class GruposBean implements Serializable{
         RequestContext ctx = RequestContext.getCurrentInstance(); //Capturo el contexto de la página
         try
         {
-            FCDEGrupos.remove(this.objeGrup);
-            this.listGrup.remove(this.objeGrup);
+            FCDEAProf.remove(this.objeProf);
+            this.listProf.remove(this.objeProf);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
         }
@@ -132,7 +136,7 @@ public class GruposBean implements Serializable{
     {
         try
         {
-            this.listGrup = FCDEGrupos.findAll();
+            this.listProf = FCDEAProf.findAll();
         }
         catch(Exception ex)
         {
@@ -150,10 +154,10 @@ public class GruposBean implements Serializable{
         int codi = Integer.parseInt(FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("codiAlumPara"));
         try
         {
-            this.objeGrup = FCDEGrupos.find(codi);
+            this.objeProf = FCDEAProf.find(codi);
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
-                    String.format("%s", this.objeGrup.getNombGrup()) + "')");
+                    String.format("%s %s", this.objeProf.getNombProf(), this.objeProf.getApelProf()) + "')");
         }
         catch(Exception ex)
         {
@@ -164,5 +168,4 @@ public class GruposBean implements Serializable{
             
         }
     }
-    
 }
