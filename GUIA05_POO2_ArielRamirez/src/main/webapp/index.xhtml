@@ -49,15 +49,13 @@ and open the template in the editor.
         </style>
     </h:head>
     <h:body>
-        <div class="row col-md-12">
-           
-                     <h:link outcome="GruposAlumno" class="btn btn-primary btn-xs" value="Ir a Grupos Alumno"/>
-                     <h:link outcome="Grupos" class="btn btn-primary btn-xs" value="Ir a Grupos "/>
-                     <h:link outcome="Profesores" class="btn btn-primary btn-xs" value="Ir a Profesores"/>
-                     <h:link outcome="Cursos" class="btn btn-primary btn-xs" value="Ir a Cursos"/>
-                    
-                
-                
+
+        <div class="breadcrumb">
+            <li><h:link outcome="index"  value="Ir a Alumnos"/></li>
+            <li><h:link outcome="GruposAlumno"  value="Ir a Grupos Alumno"/></li>
+            <li><h:link outcome="Grupos"  value="Ir a Grupos "/></li>
+            <li><h:link outcome="Profesores"  value="Ir a Profesores"/></li>
+            <li> <h:link outcome="Cursos" value="Ir a Cursos"/> </li>
         </div>
                 
       
