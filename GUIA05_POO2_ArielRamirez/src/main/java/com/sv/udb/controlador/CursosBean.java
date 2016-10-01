@@ -5,6 +5,7 @@
  */
 package com.sv.udb.controlador;
 
+import static com.fasterxml.jackson.databind.util.ClassUtil.getRootCause;
 import com.sv.udb.ejb.CursosFacadeLocal;
 import com.sv.udb.ejb.CursosFacadeLocal;
 import com.sv.udb.modelo.Cursos;
@@ -16,6 +17,7 @@ import javax.inject.Named;
 import javax.enterprise.context.Dependent;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -29,7 +31,7 @@ public class CursosBean implements Serializable{
     @EJB
     private CursosFacadeLocal FCDECurs;
 
-   
+   private static Logger log = Logger.getLogger(CursosBean.class);
     
     private Cursos objeCurs;
     private List<Cursos> listCurs;
@@ -62,6 +64,7 @@ public class CursosBean implements Serializable{
     public void init()
     {
         this.objeCurs = new Cursos();
+           log.debug("Se creo un nuevo objeto");
         this.guardar = true;
         this.consTodo();
     }
@@ -69,6 +72,7 @@ public class CursosBean implements Serializable{
     public void limpForm()
     {
         this.objeCurs = new Cursos();
+        log.debug("Formulario limpiado, se creo un nuevo objeto");
         this.guardar = true;        
     }
     
@@ -81,10 +85,12 @@ public class CursosBean implements Serializable{
             this.listCurs.add(this.objeCurs);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos guardados')");
+            log.info("Datos guardados");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al guardar ')");
+             log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -101,10 +107,12 @@ public class CursosBean implements Serializable{
             FCDECurs.edit(this.objeCurs);
             this.listCurs.add(this.objeCurs); //Agrega el objeto modificado
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Modificados')");
+            log.info("Datos Modificados");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al modificar ')");
+             log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -121,10 +129,12 @@ public class CursosBean implements Serializable{
             this.listCurs.remove(this.objeCurs);
             this.limpForm();
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Datos Eliminados')");
+             log.info("Datos Eliminados");
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al eliminar')");
+             log.error(getRootCause(ex).getMessage());
         }
         finally
         {
@@ -137,10 +147,13 @@ public class CursosBean implements Serializable{
         try
         {
             this.listCurs = FCDECurs.findAll();
+             log.info("Todos los datos consultados");
         }
         catch(Exception ex)
         {
             ex.printStackTrace();
+            log.error(getRootCause(ex).getMessage());
+            
         }
         finally
         {
@@ -158,10 +171,13 @@ public class CursosBean implements Serializable{
             this.guardar = false;
             ctx.execute("setMessage('MESS_SUCC', 'Atención', 'Consultado a " + 
                     String.format("%s", this.objeCurs.getNombCurs()) + "')");
+            log.info( "Consultado a " + 
+                    String.format("%s", this.objeCurs.getNombCurs()) );
         }
         catch(Exception ex)
         {
             ctx.execute("setMessage('MESS_ERRO', 'Atención', 'Error al consultar')");
+            log.error(getRootCause(ex).getMessage());
         }
         finally
         {

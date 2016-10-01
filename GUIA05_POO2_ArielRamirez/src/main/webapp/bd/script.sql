@@ -101,7 +101,14 @@ CREATE TABLE IF NOT EXISTS `profesores` (
   PRIMARY KEY (`codi_prof`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
+CREATE TABLE AppLog
+   (
+    Fecha   VARCHAR(50)    NOT NULL,
+    Clase  VARCHAR(50)    NOT NULL,
+    Nivel   VARCHAR(10)    NOT NULL,
+    Mensaje VARCHAR(1000)  NOT NULL
+   );
+   
 
 
 -- inserts 
@@ -118,6 +125,12 @@ insert into grupos values(null,'grupo 3','2016-1-1','2016-12-12','12:00','00:00'
 insert into profesores values(null,'javier','lopez','correo1@correo.com',22324578,'dirreción1');
 insert into profesores values(null,'pablo','sanchez','correo1@correo.com',22324578,'dirreción1');
 insert into profesores values(null,'carloz','sanchis','correo1@correo.com',22324578,'dirreción1');
+
+
+
+drop table grupos_alumnos
+delete from AppLog
+select * from AppLog
 
 -- La exportación de datos fue deseleccionada.
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
